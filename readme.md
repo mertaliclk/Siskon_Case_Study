@@ -1,4 +1,4 @@
-# SISKON-EXAM Project
+# SISKON Case Study
 
 ![Node.js](https://img.shields.io/badge/Node.js-v14+-green)
 ![Express](https://img.shields.io/badge/Express-v4.21.2-blue)
