@@ -1,0 +1,117 @@
+[
+    {
+        "userId": 1,
+        "mobileNumber": "1234567890",
+        "married": false,
+        "childrenCount": 1,
+        "jobDetails": {
+            "startDate": "2020-01-01",
+            "endDate": "2020-01-01",
+            "title": "1",
+            "level": 4,
+            "stillWorking": false,
+            "IsDeveloper": true,
+            "programmingLanguages": [
+                "Java",
+                "Python",
+                "C"
+            ]
+        }
+    },
+    {
+        "userId": 2,
+        "mobileNumber": "2256448659",
+        "married": true,
+        "childrenCount": 1,
+        "jobDetails": {
+            "startDate": "2020-01-01",
+            "endDate": null,
+            "title": "Software Developer",
+            "level": 4,
+            "stillWorking": true,
+            "IsDeveloper": true,
+            "programmingLanguages": [
+                "Java",
+                "C++",
+                "Python",
+                "PHP",
+                "JavaScript"
+            ]
+        }
+    },
+    {
+        "userId": 3,
+        "mobileNumber": "1234567890",
+        "married": false,
+        "childrenCount": 1,
+        "jobDetails": {
+            "startDate": "2020-01-01",
+            "endDate": null,
+            "title": "TechnicalLead",
+            "level": 4,
+            "stillWorking": true,
+            "IsDeveloper": true,
+            "programmingLanguages": [
+                "JavaScript",
+                "C#"
+            ]
+        }
+    },
+    {
+        "userId": 4,
+        "mobileNumber": "1234567890",
+        "married": false,
+        "childrenCount": 1,
+        "jobDetails": {
+            "startDate": "2020-01-01",
+            "endDate": "2020-01-01",
+            "title": "1",
+            "level": 4,
+            "stillWorking": false,
+            "IsDeveloper": true,
+            "programmingLanguages": [
+                "Java",
+                "Python",
+                "C"
+            ]
+        }
+    },
+    {
+        "userId": 5,
+        "mobileNumber": "1234567890",
+        "married": false,
+        "childrenCount": 1,
+        "jobDetails": {
+            "startDate": "2020-01-01",
+            "endDate": "2020-01-01",
+            "title": "1",
+            "level": 4,
+            "stillWorking": false,
+            "IsDeveloper": true,
+            "programmingLanguages": [
+                "Java",
+                "Python",
+                "C"
+            ]
+        }
+    },
+    {
+        "userId": 6,
+        "mobileNumber": "1234567890",
+        "married": "false",
+        "childrenCount": 0,
+        "jobDetails": {
+            "startDate": "2020-05-12",
+            "endDate": null,
+            "title": "Junior Developer",
+            "level": "1",
+            "stillWorking": true,
+            "isDeveloper": true,
+            "programmingLanguages": [
+                "JavaScript",
+                "HTML",
+                "CSS"
+            ]
+        }
+    }
+]

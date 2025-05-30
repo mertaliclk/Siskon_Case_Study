@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add User</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #ff9966, #ff5e62);
+            color: #333;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            color: #333;
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        .form-container button {
+            width: 100%;
+            padding: 12px;
+            background: #ff5e62;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .form-container button:hover {
+            background: #ff3b41;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .success {
+            color: green;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Add User</h2>
+        <form id="add-user-form">
+            <input type="text" id="name" placeholder="Enter your name" required />
+            <input type="text" id="surname" placeholder="Enter your surname" required />
+            <input type="email" id="email" placeholder="Enter your email" required />
+            <input type="password" id="password" placeholder="Enter your password" required />
+            <button type="submit">Add User</button>
+        </form>
+        <p id="response-message" class="error"></p>
+    </div>
+    <script>
+        document.getElementById("add-user-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const name = document.getElementById("name").value;
+            const surname = document.getElementById("surname").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const responseMessage = document.getElementById("response-message");
+
+            // Clear previous msg
+            responseMessage.textContent = "";
+            responseMessage.className = "";
+
+            try {
+                const response = await fetch("http://localhost:3000/user/add", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ name, surname, email, password }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    responseMessage.textContent = "User added successfully!";
+                    responseMessage.className = "success";
+                    // Clear form fields
+                    document.getElementById("add-user-form").reset();
+                } else {
+                    responseMessage.textContent = data.msg || "Failed to add user.";
+                    responseMessage.className = "error";
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                responseMessage.textContent = "Something went wrong. Please try again.";
+                responseMessage.className = "error";
+            }
+        });
+    </script>
+</body>
+</html>

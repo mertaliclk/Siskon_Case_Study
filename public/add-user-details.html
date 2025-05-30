@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add User Details</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #36d1dc, #5b86e5);
+            color: #333;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            color: #333;
+        }
+
+        .form-container input, .form-container select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        .form-container button {
+            width: 100%;
+            padding: 12px;
+            background: #5b86e5;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .form-container button:hover {
+            background: #4a74cc;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .success {
+            color: green;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Add User Details</h2>
+        <form id="add-user-details-form">
+            <input type="text" id="userId" placeholder="User ID" required />
+            <input type="text" id="mobileNumber" placeholder="Mobile Number" required />
+            <select id="married">
+                <option value="">Marital Status</option>
+                <option value="true">Married</option>
+                <option value="false">Single</option>
+            </select>
+            <input type="number" id="childrenCount" placeholder="Number of Children" min="0" required />
+            
+            <h3>Job Details</h3>
+            <input type="date" id="startDate" placeholder="Job Start Date" required />
+            <input type="date" id="endDate" placeholder="Job End Date (if applicable)" />
+            <input type="text" id="title" placeholder="Job Title" required />
+            <input type="text" id="level" placeholder="Job Level" required />
+            <select id="stillWorking">
+                <option value="">Still Working?</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+            <select id="isDeveloper">
+                <option value="">Are you a Developer?</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+            <input type="text" id="programmingLanguages" placeholder="Programming Languages (comma-separated)" required />
+            
+            <button type="submit">Add Details</button>
+        </form>
+        <p id="response-message" class="error"></p>
+    </div>
+    <script>
+        document.getElementById("add-user-details-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const userId = parseInt(document.getElementById("userId").value, 10);
+            const mobileNumber = document.getElementById("mobileNumber").value;
+            const married = document.getElementById("married").value;
+            const childrenCount = parseInt(document.getElementById("childrenCount").value);
+            const startDate = document.getElementById("startDate").value;
+            const endDate = document.getElementById("endDate").value || null;
+            const title = document.getElementById("title").value;
+            const level = document.getElementById("level").value;
+            const stillWorking = document.getElementById("stillWorking").value === "true";
+            const isDeveloper = document.getElementById("isDeveloper").value === "true";
+            const programmingLanguages = document
+                .getElementById("programmingLanguages")
+                .value.split(",")
+                .map((lang) => lang.trim());
+            const responseMessage = document.getElementById("response-message");
+
+            // Clear previous msg
+            responseMessage.textContent = "";
+            responseMessage.className = "";
+
+            try {
+                const response = await fetch("http://localhost:3000/userDetails/add", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        userId,
+                        mobileNumber,
+                        married,
+                        childrenCount,
+                        jobDetails: {
+                            startDate,
+                            endDate,
+                            title,
+                            level,
+                            stillWorking,
+                            isDeveloper,
+                            programmingLanguages,
+                        },
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    responseMessage.textContent = "User details added successfully!";
+                    responseMessage.className = "success";
+                    document.getElementById("add-user-details-form").reset();
+                } else {
+                    responseMessage.textContent = data.msg || "Failed to add user details.";
+                    responseMessage.className = "error";
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                responseMessage.textContent = "Something went wrong. Please try again.";
+                responseMessage.className = "error";
+            }
+        });
+    </script>
+</body>
+</html>

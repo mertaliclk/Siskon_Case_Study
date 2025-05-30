@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-bar input {
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        table th, table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #0072ff;
+            color: white;
+            cursor: pointer;
+        }
+
+        .edit-row {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h2>User Details List</h2>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search by name, title, or programming languages..." />
+    </div>
+
+    <!-- Table Container -->
+    <div class="table-container">
+        <table id="user-details-table">
+            <thead>
+                <tr>
+                    <th data-column="name">Name</th>
+                    <th data-column="mobileNumber">Mobile Number</th>
+                    <th data-column="title">Job Title</th>
+                    <th data-column="programmingLanguages">Programming Languages</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+        console.log("Page script loaded"); // to control the script
+
+        async function fetchUserDetails() {
+            const response = await fetch("http://localhost:3000/userDetails/list");
+            const data = await response.json();
+            return data;
+        }
+
+        async function populateTable() {
+            const data = await fetchUserDetails();
+            const tableBody = document.querySelector("#user-details-table tbody");
+            tableBody.innerHTML = ""; // Clear previous rows
+
+            data.forEach((user) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${user.name}</td>
+                    <td>${user.mobileNumber}</td>
+                    <td>${user.jobDetails.title}</td>
+                    <td>${user.jobDetails.programmingLanguages.join(", ")}</td>
+                    <td><button onclick="editRow(this)">Edit</button></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function editRow(button) {
+            const row = button.parentElement.parentElement;
+            const cells = row.querySelectorAll("td");
+            row.classList.add("edit-row");
+
+            cells.forEach((cell, index) => {
+                if (index < cells.length - 1) {
+                    const input = document.createElement("input");
+                    input.value = cell.textContent;
+                    cell.textContent = "";
+                    cell.appendChild(input);
+                }
+            });
+
+            button.textContent = "Save";
+            button.onclick = () => saveRow(button);
+        }
+
+        async function saveRow(button) {
+            const row = button.parentElement.parentElement;
+            const inputs = row.querySelectorAll("input");
+            const updatedData = {
+                name: inputs[0].value,
+                mobileNumber: inputs[1].value,
+                jobDetails: {
+                    title: inputs[2].value,
+                    programmingLanguages: inputs[3].value.split(",").map((lang) => lang.trim()),
+                },
+            };
+
+            console.log("Updated data to send:", updatedData);
+
+            row.innerHTML = `
+                <td>${updatedData.name}</td>
+                <td>${updatedData.mobileNumber}</td>
+                <td>${updatedData.jobDetails.title}</td>
+                <td>${updatedData.jobDetails.programmingLanguages.join(", ")}</td>
+                <td><button onclick="editRow(this)">Edit</button></td>
+            `;
+            row.classList.remove("edit-row");
+        }
+
+        // Search functionality
+        document.getElementById("search-input").addEventListener("input", (event) => {
+            const searchTerm = event.target.value.toLowerCase();
+            const rows = document.querySelectorAll("#user-details-table tbody tr");
+
+            rows.forEach((row) => {
+                const rowText = row.textContent.toLowerCase();
+                row.style.display = rowText.includes(searchTerm) ? "" : "none";
+            });
+        });
+
+        // Sort functionality
+        document.querySelectorAll("th[data-column]").forEach((header) => {
+            header.addEventListener("click", () => {
+                const column = header.dataset.column;
+                const rows = Array.from(document.querySelectorAll("#user-details-table tbody tr"));
+                const sortedRows = rows.sort((a, b) => {
+                    const aText = a.querySelector(`td:nth-child(${header.cellIndex + 1})`).textContent;
+                    const bText = b.querySelector(`td:nth-child(${header.cellIndex + 1})`).textContent;
+                    return aText.localeCompare(bText);
+                });
+                const tableBody = document.querySelector("#user-details-table tbody");
+                tableBody.innerHTML = "";
+                sortedRows.forEach((row) => tableBody.appendChild(row));
+            });
+        });
+
+        populateTable();
+    </script>
+</body>
+</html>

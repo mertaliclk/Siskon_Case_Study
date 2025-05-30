@@ -1,0 +1,277 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Siskon Exam API",
+    "version": "1.0.0",
+    "title": "Siskon Exam API",
+    "termsOfService": "https://siskon.com.tr/",
+    "contact": { "name": "apiteam@swagger.io" }
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": ["http"],
+  "paths": {
+    "/userDetails/list": {
+      "get": {
+        "tags": ["userDetails"],
+        "summary": "Get User Details",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/userDetails" }
+          }
+        }
+      }
+    },
+    "/userDetails/add": {
+      "post": {
+        "tags": ["userDetails"],
+        "summary": "Add user details",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Configuration for adding user details",
+            "required": true,
+            "schema": { "$ref": "#/definitions/userDetailsAdd" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/userDetails/{userId}": {
+      "put": {
+        "tags": ["userDetails"],
+        "summary": "Update user details",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": { "type": "integer" },
+            "required": true,
+            "description": "The user ID."
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Configuration for adding user details",
+            "required": true,
+            "schema": { "$ref": "#/definitions/userDetails" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/user/add": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Add user",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Configuration for adding user",
+            "required": true,
+            "schema": { "$ref": "#/definitions/userAdd" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Login user",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Configuration for adding user",
+            "required": true,
+            "schema": { "$ref": "#/definitions/userLogin" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    }
+
+  },
+  "definitions": {
+    "userDetails": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "int",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "John"
+        },
+        "surname": {
+          "type": "string",
+          "example": "Doe"
+        },
+        "email": {
+          "type": "string",
+          "example": "john.doe@example.com"
+        },
+        "mobileNumber": {
+          "type": "string",
+          "example": "2256448659"
+        },
+        "married": {
+          "type": "boolean",
+          "example": true
+        },
+        "childrenCount": {
+          "type": "int",
+          "example": 1
+        },
+        "jobDetails": {
+          "type": "object",
+          "properties": {
+            "startDate": {
+              "type": "string",
+              "example": "2020-01-01"
+            },
+            "endDate": {
+              "type": "string",
+              "example": null
+            },
+            "title": {
+              "type": "string",
+              "example": "Software Developer"
+            },
+            "level": {
+              "type": "int",
+              "example": 4
+            },
+            "stillWorking": {
+              "type": "boolean",
+              "example": true
+            },
+            "IsDeveloper": {
+              "type": "boolean",
+              "example": true
+            },
+            "programmingLanguages": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": ["Java", "C++", "Python", "PHP", "JavaScript"]
+            }
+          }
+        }
+      }
+    },
+    "userDetailsAdd": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "int",
+          "example": 1
+        },
+        "mobileNumber": {
+          "type": "string",
+          "example": "2256448659"
+        },
+        "married": {
+          "type": "boolean",
+          "example": true
+        },
+        "childrenCount": {
+          "type": "int",
+          "example": 1
+        },
+        "jobDetails": {
+          "type": "object",
+          "properties": {
+            "startDate": {
+              "type": "string",
+              "example": "2020-01-01"
+            },
+            "endDate": {
+              "type": "string",
+              "example": null
+            },
+            "title": {
+              "type": "string",
+              "example": "Software Developer"
+            },
+            "level": {
+              "type": "int",
+              "example": 4
+            },
+            "stillWorking": {
+              "type": "boolean",
+              "example": true
+            },
+            "IsDeveloper": {
+              "type": "boolean",
+              "example": true
+            },
+            "programmingLanguages": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": ["Java", "C++", "Python", "PHP", "JavaScript"]
+            }
+          }
+        }
+      }
+    },
+    "userAdd":{
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "John"
+        },
+        "surname": {
+          "type": "string",
+          "example": "Doe"
+        },
+        "email": {
+          "type": "string",
+          "example": "john.doe@example.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "<PASSWORD>"
+        }
+      }
+    },
+    "userLogin":{
+      "type": "object",
+      "properties": {       
+        "email": {
+          "type": "string",
+          "example": "john.doe@example.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "<PASSWORD>"
+        }
+      }
+    }
+  }
+}
